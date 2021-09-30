@@ -16,12 +16,12 @@ class Task:
         else:
             return 'not completed'
 
-    def check_priority(self, priority_inp):
-        if len(priority_inp) != 0:
-            if priority_inp.isdigit():
-                if 1 <= priority_inp <= 4:
+    def check_priority(self, pr):
+        if len(pr) != 0:
+            if pr.isdigit():
+                if 1 <= pr <= 4:
                     return True
         return False
 
-    def check_project(self, project_inp):
-        return len(project_inp) != 0
+    def check_project(self, proj):
+        return len(proj) != 0
