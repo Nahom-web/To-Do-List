@@ -4,40 +4,33 @@ import task
 class ToDoList:
 
     tasks = {}
-    tasks_commands = list()
 
     def __init__(self):
         self.tasks = {}
-
-    def add_task_commands(self):
-        commands = [
-            'add',
-            'rem',
-            'done',
-            'list',
-            'purge'
-        ]
-
-        self.tasks_commands = commands
-
-        return self.tasks_commands
 
     def add(self, task_list):
         new_task = task.Task()
 
         task_name = new_task.get_task_name(task_list)
 
-        priority = new_task.get_priority_number(task_list)
+        priority = new_task.get_priority_number([x for x in task_list if '!' in x])
 
-        project = new_task.get_project_name(task_list)
+        project = new_task.get_project_name([x for x in task_list if '#' in x])
 
         new_task.description = task_name
 
-        if priority != 0:
+        if priority is not None:
             new_task.priority = priority
 
-        if len(project) != 0:
+        if project is not None:
             new_task.project = project
+
+        ToDoList.tasks[str(new_task.task_id)] = {
+            'Description': new_task.description,
+            'Completed': False,
+            'Priority': priority,
+            'Project': project
+        }
 
         return new_task
 
