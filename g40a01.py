@@ -14,7 +14,7 @@ def start_program():
                 stripped_task = task_input.split()
                 command = stripped_task[0]
                 if command == 'add':
-                    new_to_do_list.add(stripped_task)
+                    print(new_to_do_list.add(stripped_task))
                 elif command == 'upd':
                     new_to_do_list.update()
                 elif command == 'rem':
