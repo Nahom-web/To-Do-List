@@ -26,13 +26,14 @@ class ToDoList:
             new_task.project = project
 
         ToDoList.tasks[str(new_task.task_id)] = {
+            'Task_id': new_task.task_id,
             'Description': new_task.description,
             'Completed': False,
             'Priority': priority,
             'Project': project
         }
 
-        return new_task
+        return new_task.__str__()
 
     def update(self):
         return self.tasks
@@ -44,10 +45,14 @@ class ToDoList:
         return self.tasks
 
     def list_all(self):
-        return self.tasks
+        return ToDoList.tasks
 
     def list_incomplete(self):
         return self.tasks
 
     def remove_completed_tasks(self):
         return self.tasks
+
+    def print_tasks(self, tasks_inp):
+        for id, t in ToDoList.tasks:
+            print(f'Task {id} is to {t.Description}. It is {t.is_completed()}.')

@@ -21,8 +21,8 @@ def start_program():
                     new_to_do_list.remove()
                 elif command == 'done':
                     new_to_do_list.completed_task()
-                elif command == 'list':
-                    new_to_do_list.list_all()
+                elif task_input == 'list all':
+                    new_to_do_list.print_tasks(new_to_do_list.list_all())
                 elif command == 'purge':
                     new_to_do_list.list_incomplete()
                 else:

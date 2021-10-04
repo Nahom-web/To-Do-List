@@ -13,7 +13,7 @@ class ToDoListFiles:
                 for line in reader.readlines():
                     print(line, end="")
             else:
-                print('file empty')
+                raise FileNotFoundException("Cannot find file")
 
     @staticmethod
     def write_task():
