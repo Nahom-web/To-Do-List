@@ -2,6 +2,7 @@
 # by Nahom Haile
 
 import toDoList
+import toDoListFiles
 
 
 def start_program():
@@ -22,7 +23,7 @@ def start_program():
                 elif command == 'done':
                     new_to_do_list.completed_task()
                 elif task_input == 'list all':
-                    new_to_do_list.print_tasks(new_to_do_list.list_all())
+                    new_to_do_list.print_tasks(tasks_inp=new_to_do_list.list_all())
                 elif command == 'purge':
                     new_to_do_list.list_incomplete()
                 else:
@@ -32,4 +33,6 @@ def start_program():
 
 
 if __name__ == '__main__':
-    start_program()
+    toDoListFiles.ToDoListFiles._read_tasks()
+
+    # start_program()

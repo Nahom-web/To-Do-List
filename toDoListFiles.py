@@ -1,13 +1,17 @@
 FILE = './Files/tasks.txt'
 
 
+class FileNotFoundException(Exception):
+    pass
+
+
 class ToDoListFiles:
 
     def __init__(self):
-        pass
+        print(self._read_tasks())
 
     @staticmethod
-    def read_tasks():
+    def _read_tasks():
         with open(FILE, "r") as reader:
             if len(reader.readlines()) != 0:
                 for line in reader.readlines():

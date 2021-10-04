@@ -45,7 +45,7 @@ class Task:
 
     def get_task_name(self, task_list_inp):
         task_name = "".join([name + " " for name in task_list_inp if name != 'add' and '!' not in name and '#' not in name])
-        return task_name
+        return task_name.rstrip()
 
     def get_priority_number(self, task_list_inp):
         if len(task_list_inp) != 0:
@@ -56,5 +56,5 @@ class Task:
     def get_project_name(self, task_list_inp):
         if len(task_list_inp) != 0:
             project = [p[1:] for p in task_list_inp if len(p[1:][0]) != 0]
-            return str(project)
+            return ''.join(project)
         return None

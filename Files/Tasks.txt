@@ -1,3 +1,1 @@
-{0: {'Description:': 'Study for Systems test', 'Completed': False, 'Priority': 1, 'Project': 'Systems'}}
-{0: {'Description:': 'Study for Systems test', 'Completed': False, 'Priority': 1, 'Project': 'School'}, 1: {'Description:': 'Complete dev assignment', 'Completed': False, 'Priority': 2, 'Project': 'School'}}
-{0: {'Description:': 'Study for Systems test', 'Completed': False, 'Priority': 1, 'Project': 'School'}, 1: {'Description:': 'Complete dev assignment', 'Completed': False, 'Priority': 2, 'Project': 'School'}}
+1~study for test~False~!1~#school
