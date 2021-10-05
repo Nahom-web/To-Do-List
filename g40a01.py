@@ -7,15 +7,24 @@ import toDoListFiles
 
 def start_program():
     print("Welcome")
+    print('''Commands you can enter:
+    1. 'add' for adding tasks
+    2. 'upd' for updating task
+    3. 'rem' for removing a task
+    4. 'done' to complete a task
+    5. 'list all' to list all your tasks
+    6. 'list todo' to list all incomplete tasks ordered by priority
+    7. 'purge' to remove all completed tasks''')
+    new_to_do_list = toDoList.ToDoList()
     while True:
         try:
             task_input = input("")
-            new_to_do_list = toDoList.ToDoList()
+
             if task_input != 0:
                 stripped_task = task_input.split()
                 command = stripped_task[0]
                 if command == 'add':
-                    print(new_to_do_list.add(stripped_task))
+                    new_to_do_list.add(stripped_task)
                 elif command == 'upd':
                     new_to_do_list.update()
                 elif command == 'rem':
@@ -23,7 +32,9 @@ def start_program():
                 elif command == 'done':
                     new_to_do_list.completed_task()
                 elif task_input == 'list all':
-                    new_to_do_list.print_tasks(tasks_inp=new_to_do_list.list_all())
+                    new_to_do_list.print_tasks(new_to_do_list.get_all_tasks())
+                elif task_input == 'list todo':
+                    new_to_do_list.print_tasks(new_to_do_list.list_incomplete())
                 elif command == 'purge':
                     new_to_do_list.list_incomplete()
                 else:
@@ -33,6 +44,4 @@ def start_program():
 
 
 if __name__ == '__main__':
-    toDoListFiles.ToDoListFiles._read_tasks()
-
-    # start_program()
+    start_program()

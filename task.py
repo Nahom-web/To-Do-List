@@ -12,21 +12,11 @@ class InvalidPriorityNumberException(Exception):
 
 class Task:
 
-    next_task_id = 1
-
     def __init__(self):
-        self.task_id = Task.next_task_id
-        self.increment_next_id()
         self.description = ""
         self.completed = False
         self.priority = None
         self.project = None
-
-    def __str__(self):
-        return f'Task {self.task_id} added'
-
-    def increment_next_id(self):
-        Task.next_task_id += 1
 
     def is_completed(self):
         if self.completed:
@@ -49,12 +39,12 @@ class Task:
 
     def get_priority_number(self, task_list_inp):
         if len(task_list_inp) != 0:
-            priority_num = [p[1:] for p in task_list_inp if self.check_priority(p[1:])][0]
-            return int(priority_num)
+            priority_num = [p for p in task_list_inp if self.check_priority(p[1:])][0]
+            return priority_num
         return None
 
     def get_project_name(self, task_list_inp):
         if len(task_list_inp) != 0:
-            project = [p[1:] for p in task_list_inp if len(p[1:][0]) != 0]
+            project = [p for p in task_list_inp if len(p[1:][0]) != 0]
             return ''.join(project)
         return None

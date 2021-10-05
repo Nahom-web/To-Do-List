@@ -1,28 +1,20 @@
-FILE = './Files/tasks.txt'
+FILE = './Files/Tasks.txt'
 
 
-class FileNotFoundException(Exception):
+class FileEmptyException(BaseException):
     pass
 
 
 class ToDoListFiles:
 
-    def __init__(self):
-        print(self._read_tasks())
-
     @staticmethod
-    def _read_tasks():
+    def read_tasks():
+        tasks = list()
         with open(FILE, "r") as reader:
-            if len(reader.readlines()) != 0:
-                for line in reader.readlines():
-                    print(line, end="")
-            else:
-                raise FileNotFoundException("Cannot find file")
+            for line in reader.readlines():
+                tasks.append(line)
+        return tasks
 
     @staticmethod
-    def write_task():
-        return 0
-
-    @staticmethod
-    def save_tasks():
+    def save_task():
         return 0
