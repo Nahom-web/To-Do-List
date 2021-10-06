@@ -14,30 +14,47 @@ class ToDoList:
     def add(self, task_list):
         new_task = task.Task()
 
-        task_name = new_task.get_task_name(task_list)
+        task_name = ""
+        priority = None
+        project = None
+        completed = False
 
-        priority = new_task.get_priority_number([x for x in task_list if '!' in x])
+        if task_list == 'add':
+            task_name = input("Enter task description>>>")
+            if new_task.check_task_name_input(task_name):
+                new_task.description = task_name.rstrip()
+            completed = input("Enter completed>>>")
+            if new_task.check_completed_input(completed):
+                new_task.description = task_name.rstrip()
+            priority = input("Enter priority>>>")
+            if new_task.check_priority(priority):
+                new_task.description = task_name.rstrip()
+            project = input("Enter project>>>")
+            if new_task.check_project_input(project):
+                new_task.description = task_name.rstrip()
 
-        project = new_task.get_project_name([x for x in task_list if '#' in x])
+        else:
+            task_name = new_task.get_task_name(task_list)
+            new_task.description = task_name
+            priority = new_task.get_priority_number([x for x in task_list if '!' in x])
+            project = new_task.get_project_name([x for x in task_list if '#' in x])
 
-        new_task.description = task_name
+            if priority is not None:
+                new_task.priority = priority
 
-        if priority is not None:
-            new_task.priority = priority
+            if project is not None:
+                new_task.project = project
 
-        if project is not None:
-            new_task.project = project
+            id = ToDoList.increment_next_id(self)
 
-        id = ToDoList.increment_next_id(self)
+            self.tasks[id] = {
+                'Description': new_task.description,
+                'Completed': False,
+                'Priority': priority,
+                'Project': project
+            }
 
-        self.tasks[id] = {
-            'Description': new_task.description,
-            'Completed': False,
-            'Priority': priority,
-            'Project': project
-        }
-
-        print(f'Task {id} added.')
+            print(f'Task {id} added.')
 
     def update(self):
         return self.tasks
@@ -51,7 +68,7 @@ class ToDoList:
     def list_incomplete(self):
         task_list = [{key: value} for key, value in self.get_all_tasks().items() if value["Completed"] is False]
         for item in task_list:
-            print(item[0])
+            print(item)
 
     def remove_completed_tasks(self):
         return self.tasks
@@ -63,7 +80,7 @@ class ToDoList:
             new_task.completed = t["Completed"]
             new_task.priority = t["Priority"]
             new_task.project = t["Project"]
-            print(f'Task {id}: {new_task.description}, for {new_task.project}. Completed: {new_task.is_completed()}. '
+            print(f'Task {id}: {new_task.description}, for {new_task.project}. Completed: {new_task.completed_string()}. '
                   f'{new_task.priority[1:]} in your list of priorities.')
 
     def get_next_task_number(self):
