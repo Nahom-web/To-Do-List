@@ -9,7 +9,7 @@ class ToDoList:
 
     def increment_next_id(self):
         last_id = self.get_all_tasks(self).keys()
-        return int(list(ToDoList.tasks)[-1]) + 1
+        return int(list(self.tasks)[-1]) + 1
 
     def add(self, task_list):
         new_task = task.Task()
