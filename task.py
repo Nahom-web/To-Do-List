@@ -22,6 +22,9 @@ class Task:
         self.priority = None
         self.project = None
 
+    def __str__(self):
+        return f'Task added'
+
     def completed_string(self):
         if self.completed:
             return 'completed'

@@ -16,5 +16,8 @@ class ToDoListFiles:
         return tasks
 
     @staticmethod
-    def save_task():
-        return 0
+    def save_task(task_added, id):
+        # 4~Study for Security test~True~!1~#school
+        f = open(FILE, "a")
+        f.write(f'\r{id}~{task_added.description}~{task_added.completed}~{task_added.priority}~{task_added.project}')
+        f.close()
