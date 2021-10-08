@@ -1,4 +1,1 @@
-1~Complete work on prototype conversion~False~!1~#school
-2~Study for Systems test~False~!1~#school
-3~Study for Web Programming test~False~!1~#school
-4~Study for Security test~True~!1~#school5~Study for Programming test~False~!1~#school6~work on dev projects~False~None~None7~sleep~False~!1~#home
+1~Complete work on prototype conversion~False~!1~#school2~Study for Systems test~False~!1~#school3~Study for Web Programming test~False~!1~#school4~Study for Security test~True~!1~#school5~Study for Programming test~False~!1~#school7~sleep~False~!1~#home8~test~False~None~None9~test~False~None~None10~test1~False~None~None11~test1~False~None~None

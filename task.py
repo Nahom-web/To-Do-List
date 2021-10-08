@@ -8,6 +8,13 @@ class Task:
         self.project = _project
 
     def __str__(self):
-        return f'Task added'
+        return f'{self.description}'
 
+    def added_message(self, _id):
+        return f'Task {_id} added'
 
+    def completed_string(self):
+        if self.completed:
+            return 'completed'
+        else:
+            return 'not completed'
