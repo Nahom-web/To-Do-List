@@ -2,6 +2,60 @@ import task
 import toDoListFiles
 
 
+class NoPriorityNumberException(Exception):
+    def __init__(self):
+        self.message = "No priority number entered, please enter a number (1-4)"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}'
+
+
+class PriorityNotANumberException(Exception):
+    def __init__(self):
+        self.message = "Priority number is not a number."
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}'
+
+
+class InvalidProjectNameException(Exception):
+    def __init__(self):
+        self.message = "No priority number entered, please enter a number (1-4)"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}'
+
+
+class TooManyHashtagsInProjectNameException(Exception):
+    def __init__(self):
+        self.message = "Too many # in front of the project name."
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}'
+
+
+class InvalidProjectNameFormatException(Exception):
+    def __init__(self):
+        self.message = "Please enter a valid project name with a # in front."
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}'
+
+
+class InvalidPriorityNumberException(Exception):
+    def __init__(self):
+        self.message = "Please enter a number between 1 and 4"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}'
+
+
 class ToDoList:
     TABLE_HEADERS = ['DESCRIPTION', 'COMPLETED', 'PRIORITY', 'PROJECT']
 
@@ -14,48 +68,57 @@ class ToDoList:
         else:
             return 1
 
-    def add(self, task_list):
-        new_task = task.Task()
-
-        task_name = ""
-        priority = None
-        project = None
-        completed = False
-
-        if task_list == 'add':
-            return 0
+    def add(self, task_input):
+        if len(task_input) == 1 and task_input[0].lower() == "add":
+            task_description_input = input("Enter task description>>>")
+            task_completed_input = input("Enter Completed>>>")
+            task_priority_input = input("Enter Priority>>>")
+            task_project_input = input("Enter Project>>>")
         else:
-            task_name = new_task.get_task_name(task_list)
-            new_task.description = task_name
-            priority = new_task.get_priority_number([x for x in task_list if '!' in x])
+            task_desc = ("".join(
+                [name + " " for name in task_input if name != 'add' and '!' not in name and '#' not in name])).rstrip()
 
-            if priority is not None:
-                new_task.priority = priority
+            task_priority = self.determine_priority(task_input)
 
-            project = new_task.get_project_name([x for x in task_list if '#' in x])
+            task_project = self.check_project_input(task_input)
 
-            if project is not None:
-                new_task.project = project
+        return 0
 
-            id = ToDoList.increment_next_id(self)
-            self.tasks[id] = new_task
-            files = toDoListFiles.ToDoListFiles()
-            files.save_task(self.tasks[id], id)
-            return self.tasks[id]
+    def check_project_input(self, project):
+        if project[0] != '#':
+            raise InvalidProjectNameFormatException()
+        if project.count('#') < 0 or project.count('#') > 1:
+            raise TooManyHashtagsInProjectNameException()
 
-    # def add_from_input(self, new_task_obj):
-    #     task_name = input("Enter task description>>>")
-    #     if new_task.check_task_name_input(task_name):
-    #         new_task.description = task_name.rstrip()
-    #     completed = input("Enter completed>>>")
-    #     if new_task.check_completed_input(completed):
-    #         new_task.description = task_name.rstrip()
-    #     priority = input("Enter priority>>>")
-    #     if new_task.check_priority(priority):
-    #         new_task.description = task_name.rstrip()
-    #     project = input("Enter project>>>")
-    #     if new_task.check_project_input(project):
-    #         new_task.description = task_name.rstrip()
+    def determine_project(self, project):
+        try:
+            self.check_project_input(project)
+            if len([p for p in project if '#' in p]) != 0:
+                return ''.join([p for p in project if len(p[1:][0]) != 0])
+            return None
+        except InvalidProjectNameException:
+            print(InvalidProjectNameException.__str__)
+        except TooManyHashtagsInProjectNameException:
+            print(TooManyHashtagsInProjectNameException.__str__)
+
+    def check_priority(self, pr):
+        if len(pr) == 0:
+            raise NoPriorityNumberException()
+        if not pr.isdigit():
+            raise PriorityNotANumberException()
+        if 1 > int(pr) > 4:
+            raise InvalidPriorityNumberException()
+        return True
+
+    def determine_priority(self, priority):
+        try:
+            return [p for p in priority if '!' in p and self.check_priority(p[1:])][0]
+        except NoPriorityNumberException:
+            print(NoPriorityNumberException.__str__)
+        except PriorityNotANumberException:
+            print(PriorityNotANumberException.__str__)
+        except InvalidPriorityNumberException:
+            print(InvalidPriorityNumberException.__str__)
 
     def update(self):
         return self.tasks
@@ -78,8 +141,9 @@ class ToDoList:
         print('{0:<23} {1:>24} {2:>26} {3:>26}'.format(ToDoList.TABLE_HEADERS[0], ToDoList.TABLE_HEADERS[1],
                                                        ToDoList.TABLE_HEADERS[2], ToDoList.TABLE_HEADERS[3]))
         for id, t in tasks_inp.items():
-            print('{0:<30} {1:>35} {2:>35} {3:>35}'.format({str(t.description)}, {str(t.project)}, {t.completed_string()},
-                                                           {str(t.priority[1:])}))
+            print(
+                '{0:<30} {1:>35} {2:>35} {3:>35}'.format({str(t.description)}, {str(t.project)}, {t.completed_string()},
+                                                         {str(t.priority[1:])}))
 
     def get_all_tasks(self):
         file_tasks = toDoListFiles.ToDoListFiles.read_tasks()

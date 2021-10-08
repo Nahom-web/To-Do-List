@@ -19,7 +19,6 @@ def start_program():
     while True:
         try:
             task_input = input("")
-
             if task_input != 0:
                 stripped_task = task_input.split()
                 command = stripped_task[0]
