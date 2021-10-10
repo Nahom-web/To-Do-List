@@ -10,7 +10,6 @@ class ToDoList:
 
     def __init__(self):
         self.list_of_tasks = {}
-        # self.get_all_tasks()
 
     def increment_next_id(self):
         if len(self.get_all_tasks()) != 0:
@@ -30,7 +29,7 @@ class ToDoList:
             'priority': new_task.priority,
             'project': new_task.project
         }
-        files.save_task(self.list_of_tasks[task_id], task_id)
+        files.write_all_tasks(self.list_of_tasks)
         return f'Task {task_id} added'
 
     def find_task_with_id(self, task_id):
@@ -45,8 +44,6 @@ class ToDoList:
 
         if len(find_id) == 0:
             raise exceptions.NoTaskIdException()
-        if len(find_id) > 1:
-            raise exceptions.MoreThanOneTaskIdException()
 
         find_task = self.find_task_with_id(find_id)
 
@@ -118,6 +115,8 @@ class ToDoList:
 
     def remove_completed_tasks(self):
         tasks_to_remove = {i: v for i, v in self.list_of_tasks.items() if v["completed"].lower() == "true"}
+        if len(tasks_to_remove) == 0:
+            return f'No completed tasks'
         for t_id, val in tasks_to_remove.items():
             removed_task = self.list_of_tasks.pop(t_id)
         files.write_all_tasks(self.list_of_tasks)

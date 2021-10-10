@@ -16,7 +16,7 @@ def add_from_terminal():
 
     task_completed_input = input("Enter Completed>>>")
     if task_separately.check_invalid_characters_in_completed(task_completed_input.split()):
-        task_separately.completed = task_separately.validate_completed_state(task_completed_input, True)
+        task_separately.completed = task_separately.validate_completed_state(task_completed_input, False)
 
     task_priority_input = input("Enter Priority>>>")
     if task_separately.check_invalid_characters_in_priority(task_priority_input.split()):
@@ -57,47 +57,65 @@ def update_from_terminal(stripped_task):
     print(updated_task)
 
 
+def exit_from_terminal():
+    if len(sys.argv) > 1:
+        exit(-1)
+
+
 def start_program():
-    print("Welcome")
-    print('''Commands you can enter:
-    1. 'add' for adding tasks
-    2. 'upd' for updating task
-    3. 'rem' for removing a task
-    4. 'done' to complete a task
-    5. 'list all' to list all your tasks
-    6. 'list todo' to list all incomplete tasks ordered by priority
-    7. 'purge' to remove all completed tasks''')
+    if len(sys.argv) == 1:
+        print("Welcome")
+        print('''Commands you can enter:
+        1. 'add' for adding tasks
+        2. 'upd' for updating task
+        3. 'rem' for removing a task
+        4. 'done' to complete a task
+        5. 'list all' to list all your tasks
+        6. 'list todo' to list all incomplete tasks ordered by priority
+        7. 'purge' to remove all completed tasks''')
     while True:
         try:
-            if len(sys.argv) != 1:
+            task_input = ""
+
+            if len(sys.argv) > 1:
                 task_input = " ".join(sys.argv[1:])
-            else:
+
+            if len(sys.argv) == 1:
                 print()
                 task_input = input("Enter command>>>")
-            if task_input != 0:
+
+            if len(task_input) != 0:
                 stripped_task = task_input.split()
                 command = stripped_task[0]
                 if command == 'add':
                     if len(stripped_task) == 1:
                         add_from_terminal()
+                        exit_from_terminal()
                     else:
                         task_added = new_to_do_list.add(stripped_task)
                         print(task_added)
+                        exit_from_terminal()
                 elif command == 'upd':
                     if len(stripped_task) > 2:
                         updated_task = new_to_do_list.update(stripped_task)
                         print(updated_task)
+                        exit_from_terminal()
                     if len(stripped_task) == 2:
                         update_from_terminal(stripped_task)
+                        exit_from_terminal()
                 elif command == 'rem':
                     print(new_to_do_list.remove(stripped_task[1:]))
+                    exit_from_terminal()
                 elif command == 'done':
                     print(new_to_do_list.completed_task(stripped_task[1:]))
+                    exit_from_terminal()
                 elif task_input == 'list all':
                     new_to_do_list.print_tasks(new_to_do_list.get_all_tasks())
+                    exit_from_terminal()
                 elif task_input == 'list todo':
                     list_todo = new_to_do_list.list_incomplete()
                     new_to_do_list.print_tasks(list_todo)
+                    exit_from_terminal()
                 elif command == 'purge':
                     print(new_to_do_list.remove_completed_tasks())
                 else:

@@ -44,11 +44,13 @@ class Task:
 
     @staticmethod
     def check_invalid_characters_in_completed(completed_input):
-        invalid_characters = [c for c in completed_input if c.lower() != "false" or c.lower() != "true"]
+        if len(completed_input) != 0:
+            invalid_characters = [c for c in completed_input if c.lower() != "false" and c.lower() != "true"]
 
-        if len(invalid_characters) != 0:
-            raise exceptions.InvalidCompletedInputException
+            if len(invalid_characters) != 0:
+                raise exceptions.InvalidCompletedInputException()
 
+            return True
         return True
 
     @staticmethod

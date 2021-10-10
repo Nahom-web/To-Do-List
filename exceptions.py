@@ -36,7 +36,7 @@ class TooManyExclamationMarksInPriorityNameException(BaseException):
 
 class InvalidFormatForProjectNameException(BaseException):
     def __init__(self):
-        self.message = "Please enter a valid project name with a # in front."
+        self.message = "Please enter a valid project name with a # in front followed by the project name with no spaces"
         super().__init__(self.message)
 
     def __str__(self):
@@ -81,7 +81,7 @@ class InvalidCompletedInputException(BaseException):
 
 class NoTaskIdException(BaseException):
     def __init__(self):
-        self.message = "Please enter an Id after 'upd'"
+        self.message = "Please enter an Id after the command"
         super().__init__(self.message)
 
     def __str__(self):
@@ -90,7 +90,7 @@ class NoTaskIdException(BaseException):
 
 class MoreThanOneTaskIdException(BaseException):
     def __init__(self):
-        self.message = "Please enter just one Id after 'upd'"
+        self.message = "Please enter just one Id after the command"
         super().__init__(self.message)
 
     def __str__(self):
