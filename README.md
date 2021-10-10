@@ -1,10 +1,14 @@
-# nhG40A02
-
-Python assignment, To-Do list.
+# To-Do list
 
 Advanced Topics in Computer Science - Assignment 1
 
 Languages used: Python
+
+Description:
+
+- In this to do list program you can add, update, remove, mark a task as complete, list all tasks and list by priority, and remove all completed tasks.
+- Tasks are stored in Tasks.txt. Once you start the program Tasks.txt will get created once you add the first task.
+- Also, once you run the program all the commands available will be displayed.
 
 learning outcomes:
 
