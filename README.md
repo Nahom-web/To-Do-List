@@ -1,5 +1,7 @@
 # To-Do list
 
+Author: Nahom Haile
+
 Advanced Topics in Computer Science - Assignment 1
 
 Languages used: Python
