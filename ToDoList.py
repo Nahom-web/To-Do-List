@@ -1,8 +1,13 @@
-import task
-import toDoListFiles
-import exceptions
+# by Nahom Haile
+# Advanced Topics in Computer Science I
+# ToDoList.py
+# Contains the ToDoList class. The class adds tasks, updates tasks, removes tasks, marks tasks as completed, and
+# prints all the tasks.
 
-files = toDoListFiles.ToDoListFiles()
+import Task
+import ToDoListFiles
+import Exceptions
+files = ToDoListFiles.ToDoListFiles()
 
 
 class ToDoList:
@@ -21,7 +26,7 @@ class ToDoList:
         if already_validated:
             new_task = task_input
         else:
-            new_task = task.Task(task_input, already_validated)
+            new_task = Task.Task(task_input, already_validated)
         task_id = ToDoList.increment_next_id(self)
         self.list_of_tasks[task_id] = {
             'description': new_task.description,
@@ -35,15 +40,15 @@ class ToDoList:
     def find_task_with_id(self, task_id):
         found_task = {x: y for x, y in self.get_all_tasks().items() if x == int(task_id)}
         if len(found_task) == 0:
-            raise exceptions.CannotFindTaskException()
+            raise Exceptions.CannotFindTaskException()
         return found_task
 
     def update(self, update_task_input, task_id_to_update=0):
-
-        find_id = task_id_to_update if type(update_task_input) == task.Task else [x for x in update_task_input][1]
+        # finding the task id either from the list passed or from the task passed
+        find_id = task_id_to_update if type(update_task_input) == Task.Task else [x for x in update_task_input][1]
 
         if len(find_id) == 0:
-            raise exceptions.NoTaskIdException()
+            raise Exceptions.NoTaskIdException()
 
         find_task = self.find_task_with_id(find_id)
 
@@ -52,7 +57,9 @@ class ToDoList:
         attributes_to_update = update_task_input
 
         if type(update_task_input) == list:
-            attributes_to_update = task.Task(update_task_input[2:], update_task=True)
+            # if update_task_input was passed in as a list, turn it into a task object so that I can use the object
+            # to update the task in the list of tasks appropriately
+            attributes_to_update = Task.Task(update_task_input[2:], update_task=True)
             check_completed = [c for c in update_task_input[2:] if c.lower() == "false" or c.lower() == "true"]
             if len(check_completed) == 0:
                 attributes_to_update.completed = ''
@@ -83,11 +90,11 @@ class ToDoList:
             task_id = int(task_id_list[0])
             task_to_remove = self.find_task_with_id(task_id)
             if len(task_to_remove) == 0:
-                raise exceptions.CannotFindTaskException()
+                raise Exceptions.CannotFindTaskException()
             removed_task = self.list_of_tasks.pop(task_id)
             files.write_all_tasks(self.list_of_tasks)
             return f'Removed Task {task_id}'
-        raise exceptions.NoTaskIdException()
+        raise Exceptions.NoTaskIdException()
 
     def completed_task(self, task_input):
         task_id_list = self.find_task_id(task_input)
@@ -95,11 +102,11 @@ class ToDoList:
             task_id = int(task_id_list[0])
             task_to_complete = self.find_task_with_id(task_id)
             if len(task_to_complete) == 0:
-                raise exceptions.CannotFindTaskException()
+                raise Exceptions.CannotFindTaskException()
             task_to_complete[task_id]["completed"] = 'True'
             files.write_all_tasks(self.list_of_tasks)
             return f'Marked task {task_id} as done'
-        raise exceptions.NoTaskIdException()
+        raise Exceptions.NoTaskIdException()
 
     @staticmethod
     def sort_list_by_priority(incomplete_tasks):
@@ -110,6 +117,7 @@ class ToDoList:
         incomplete_tasks_with_priority = {x: y for x, y in all_incomplete_tasks.items() if y["priority"] != "None"}
         incomplete_tasks_with_no_priority = {x: y for x, y in all_incomplete_tasks.items() if y["priority"] == "None"}
         sorted_list = self.sort_list_by_priority(incomplete_tasks_with_priority)
+        # adding the incomplete tasks with no priority number to the sorted dictionary using the update function
         sorted_list.update(incomplete_tasks_with_no_priority)
         return sorted_list
 

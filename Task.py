@@ -1,4 +1,10 @@
-import exceptions
+# by Nahom Haile
+# Advanced Topics in Computer Science I
+# Task.py
+# Contains the Task class, it takes in a list of parameters and has flags according to what the objects are for
+# when created. Validates the 4 main attributes: description, completed, priority, and project.
+
+import Exceptions
 
 
 class Task:
@@ -21,20 +27,19 @@ class Task:
 
     def validate_description(self, _task_parameters, can_be_empty=False):
         description = self.get_description(_task_parameters)
+        # if your updating the description it can be empty.
         if can_be_empty and len(description) == 0:
             return ''
         if len(description) == 0:
-            raise exceptions.EmptyDescriptionException()
+            raise Exceptions.EmptyDescriptionException()
         return " ".join(description)
 
     @staticmethod
     def check_invalid_characters_in_description(description_input):
         if len(description_input) != 0:
             invalid_characters = [c for c in description_input if '!' not in c and '#' not in c]
-
             if len(invalid_characters) != 0:
-                raise exceptions.InvalidDescriptionException()
-
+                raise Exceptions.InvalidDescriptionException()
             return True
         return True
 
@@ -51,16 +56,14 @@ class Task:
         elif len(completed) == 1:
             return eval(completed[0].title())
         else:
-            raise exceptions.InvalidCompletedInputException()
+            raise Exceptions.InvalidCompletedInputException()
 
     @staticmethod
     def check_invalid_characters_in_completed(completed_input):
         if len(completed_input) != 0:
             invalid_characters = [c for c in completed_input if c.lower() != "false" and c.lower() != "true"]
-
             if len(invalid_characters) != 0:
-                raise exceptions.InvalidCompletedInputException()
-
+                raise Exceptions.InvalidCompletedInputException()
             return True
         return True
 
@@ -71,37 +74,31 @@ class Task:
     @staticmethod
     def check_priority(pr):
         if not pr.isdigit():
-            raise exceptions.PriorityNotANumberException()
+            raise Exceptions.PriorityNotANumberException()
         if 1 > int(pr) > 4:
-            raise exceptions.InvalidPriorityNumberException()
+            raise Exceptions.InvalidPriorityNumberException()
         return True
 
     def validate_priority(self, _task_parameters, can_be_empty=False):
         priority_location = self.get_priority_number(_task_parameters)
-
         if can_be_empty and len(priority_location) == 0:
             return None
-
         if len(priority_location) > 1:
-            raise exceptions.TooManyExclamationMarksInPriorityNameException()
-
+            raise Exceptions.TooManyExclamationMarksInPriorityNameException()
         if len(priority_location) == 1:
             if priority_location[0][0] != '!':
-                raise exceptions.InvalidFormatForPriorityNameException()
+                raise Exceptions.InvalidFormatForPriorityNameException()
             if priority_location[0].count('!') > 1:
-                raise exceptions.TooManyExclamationMarksInPriorityNameException()
+                raise Exceptions.TooManyExclamationMarksInPriorityNameException()
             return [p for p in _task_parameters if '!' in p and self.check_priority(p[1:])][0]
-
         if len(priority_location) < 1:
             return None
 
     @staticmethod
     def check_invalid_characters_in_priority(priority_input):
         invalid_characters = [x for x in priority_input if '!' not in x]
-
         if len(invalid_characters) != 0:
-            raise exceptions.InvalidFormatForPriorityNameException()
-
+            raise Exceptions.InvalidFormatForPriorityNameException()
         return True
 
     @staticmethod
@@ -110,19 +107,15 @@ class Task:
 
     def validate_project(self, _task_parameters, can_be_empty=False):
         project_location = self.get_project_number(_task_parameters)
-
         if can_be_empty and len(project_location) == 0:
             return None
-
         if len(project_location) > 1:
-            raise exceptions.TooManyHashtagsInProjectNameException()
-
+            raise Exceptions.TooManyHashtagsInProjectNameException()
         if len(project_location) == 1:
             if project_location[0][0] != '#':
-                raise exceptions.InvalidFormatForProjectNameException()
+                raise Exceptions.InvalidFormatForProjectNameException()
             if project_location[0].count('#') > 1:
-                raise exceptions.TooManyHashtagsInProjectNameException()
-
+                raise Exceptions.TooManyHashtagsInProjectNameException()
         if len(project_location) < 1:
             return None
 
@@ -131,8 +124,6 @@ class Task:
     @staticmethod
     def check_invalid_characters_in_project(project_input):
         invalid_characters = [x for x in project_input if '#' not in x]
-
         if len(invalid_characters) != 0:
-            raise exceptions.InvalidFormatForProjectNameException()
-
+            raise Exceptions.InvalidFormatForProjectNameException()
         return True

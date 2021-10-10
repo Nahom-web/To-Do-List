@@ -1,3 +1,9 @@
+# by Nahom Haile
+# Advanced Topics in Computer Science I
+# Exceptions.py
+# Contains all the exceptions used within the program
+
+
 class PriorityNotANumberException(BaseException):
     def __init__(self):
         self.message = "Priority number is not a number."

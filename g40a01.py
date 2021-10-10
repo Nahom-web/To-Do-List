@@ -1,16 +1,17 @@
-# g40a01.py
 # by Nahom Haile
-import task
-import toDoList
+# Advanced Topics in Computer Science I
+# g40a01.py
+# This is the main file where you run the program. It creates a new ToDoList object and calls method according
+# to the commands.
+import Task
+import ToDoList
 import sys
-import exceptions
-
-
-new_to_do_list = toDoList.ToDoList()
+import Exceptions
+new_to_do_list = ToDoList.ToDoList()
 
 
 def add_from_terminal():
-    task_separately = task.Task([], True)
+    task_separately = Task.Task([], True)
     task_description_input = input("Enter task description>>>")
     task_separately.description = task_separately.validate_description(task_description_input.split())
 
@@ -33,7 +34,7 @@ def add_from_terminal():
 def update_from_terminal(stripped_task):
     new_to_do_list.find_task_with_id(stripped_task[1])
 
-    update_task_separately = task.Task([], True)
+    update_task_separately = Task.Task([], True)
     updated_description = input("Enter new description>>>")
     if update_task_separately.check_invalid_characters_in_description(updated_description.split()):
         update_task_separately.description = update_task_separately.validate_description(
@@ -77,14 +78,11 @@ def start_program():
     while True:
         try:
             task_input = ""
-
             if len(sys.argv) > 1:
                 task_input = " ".join(sys.argv[1:])
-
             if len(sys.argv) == 1:
                 print()
                 task_input = input("Enter command>>>")
-
             if len(task_input) != 0:
                 stripped_task = task_input.split()
                 command = stripped_task[0].lower()
@@ -124,46 +122,46 @@ def start_program():
         except ValueError:
             print("Please enter a valid command")
 
-        except exceptions.PriorityNotANumberException as e:
+        except Exceptions.PriorityNotANumberException as e:
             print(e)
 
-        except exceptions.InvalidProjectNameException as e:
+        except Exceptions.InvalidProjectNameException as e:
             print(e)
 
-        except exceptions.TooManyHashtagsInProjectNameException as e:
+        except Exceptions.TooManyHashtagsInProjectNameException as e:
             print(e)
 
-        except exceptions.TooManyExclamationMarksInPriorityNameException as e:
+        except Exceptions.TooManyExclamationMarksInPriorityNameException as e:
             print(e)
 
-        except exceptions.InvalidFormatForProjectNameException as e:
+        except Exceptions.InvalidFormatForProjectNameException as e:
             print(e)
 
-        except exceptions.InvalidFormatForPriorityNameException as e:
+        except Exceptions.InvalidFormatForPriorityNameException as e:
             print(e)
 
-        except exceptions.InvalidPriorityNumberException as e:
+        except Exceptions.InvalidPriorityNumberException as e:
             print(e)
 
-        except exceptions.InvalidCompletedInputException as e:
+        except Exceptions.InvalidCompletedInputException as e:
             print(e)
 
-        except exceptions.EmptyDescriptionException as e:
+        except Exceptions.EmptyDescriptionException as e:
             print(e)
 
-        except exceptions.NoTaskIdException as e:
+        except Exceptions.NoTaskIdException as e:
             print(e)
 
-        except exceptions.MoreThanOneTaskIdException as e:
+        except Exceptions.MoreThanOneTaskIdException as e:
             print(e)
 
-        except exceptions.TooManyEntriesForUpdate as e:
+        except Exceptions.TooManyEntriesForUpdate as e:
             print(e)
 
-        except exceptions.CannotFindTaskException as e:
+        except Exceptions.CannotFindTaskException as e:
             print(e)
 
-        except exceptions.InvalidDescriptionException as e:
+        except Exceptions.InvalidDescriptionException as e:
             print(e)
 
         except FileExistsError as e:
