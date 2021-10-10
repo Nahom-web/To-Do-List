@@ -28,6 +28,17 @@ class Task:
         return " ".join(description)
 
     @staticmethod
+    def check_invalid_characters_in_description(description_input):
+        if len(description_input) != 0:
+            invalid_characters = [c for c in description_input if '!' not in c and '#' not in c]
+
+            if len(invalid_characters) != 0:
+                raise exceptions.InvalidDescriptionException()
+
+            return True
+        return True
+
+    @staticmethod
     def get_completed_state(_task_parameters):
         return [c for c in _task_parameters if c.lower() == "false" or c.lower() == "true"]
 

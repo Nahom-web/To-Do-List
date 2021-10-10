@@ -35,8 +35,9 @@ def update_from_terminal(stripped_task):
 
     update_task_separately = task.Task([], True)
     updated_description = input("Enter new description>>>")
-    update_task_separately.description = update_task_separately.validate_description(
-        updated_description.split(), True)
+    if update_task_separately.check_invalid_characters_in_description(updated_description.split()):
+        update_task_separately.description = update_task_separately.validate_description(
+            updated_description.split(), True)
 
     updated_completed = input("Enter completed state>>>")
     if update_task_separately.check_invalid_characters_in_completed(updated_completed.split()):
@@ -86,7 +87,7 @@ def start_program():
 
             if len(task_input) != 0:
                 stripped_task = task_input.split()
-                command = stripped_task[0]
+                command = stripped_task[0].lower()
                 if command == 'add':
                     if len(stripped_task) == 1:
                         add_from_terminal()
@@ -160,6 +161,9 @@ def start_program():
             print(e)
 
         except exceptions.CannotFindTaskException as e:
+            print(e)
+
+        except exceptions.InvalidDescriptionException as e:
             print(e)
 
         except FileExistsError as e:

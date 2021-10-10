@@ -70,6 +70,15 @@ class EmptyDescriptionException(BaseException):
         return f'{self.message}'
 
 
+class InvalidDescriptionException(BaseException):
+    def __init__(self):
+        self.message = "Cannot add characters for description. Please re enter description with letters only a-z A-Z"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}'
+
+
 class InvalidCompletedInputException(BaseException):
     def __init__(self):
         self.message = "Please enter False or True for completed"
