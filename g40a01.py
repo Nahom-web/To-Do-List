@@ -1,7 +1,60 @@
 # g40a01.py
 # by Nahom Haile
-
+import task
 import toDoList
+import sys
+import exceptions
+
+
+new_to_do_list = toDoList.ToDoList()
+
+
+def add_from_terminal():
+    task_separately = task.Task([], True)
+    task_description_input = input("Enter task description>>>")
+    task_separately.description = task_separately.validate_description(task_description_input.split())
+
+    task_completed_input = input("Enter Completed>>>")
+    if task_separately.check_invalid_characters_in_completed(task_completed_input.split()):
+        task_separately.completed = task_separately.validate_completed_state(task_completed_input, True)
+
+    task_priority_input = input("Enter Priority>>>")
+    if task_separately.check_invalid_characters_in_priority(task_priority_input.split()):
+        task_separately.priority = task_separately.validate_priority(task_priority_input.split(), True)
+
+    task_project_input = input("Enter Project>>>")
+    if task_separately.check_invalid_characters_in_project(task_project_input.split()):
+        task_separately.project = task_separately.validate_project(task_project_input.split(), True)
+
+    task_added = new_to_do_list.add(task_separately, True)
+    print(task_added)
+
+
+def update_from_terminal(stripped_task):
+    new_to_do_list.find_task_with_id(stripped_task[1])
+
+    update_task_separately = task.Task([], True)
+    updated_description = input("Enter new description>>>")
+    update_task_separately.description = update_task_separately.validate_description(
+        updated_description.split(), True)
+
+    updated_completed = input("Enter completed state>>>")
+    if update_task_separately.check_invalid_characters_in_completed(updated_completed.split()):
+        update_task_separately.completed = update_task_separately.validate_completed_state(
+            updated_completed.split(), True)
+
+    updated_priority = input("Enter new priority>>>")
+    if update_task_separately.check_invalid_characters_in_priority(updated_priority.split()):
+        update_task_separately.priority = update_task_separately.validate_priority(updated_priority
+                                                                                   .split(), True)
+
+    updated_project = input("Enter new project>>>")
+    if update_task_separately.check_invalid_characters_in_project(updated_project.split()):
+        update_task_separately.project = update_task_separately.validate_project(updated_project
+                                                                                 .split(), True)
+
+    updated_task = new_to_do_list.update(update_task_separately, stripped_task[1])
+    print(updated_task)
 
 
 def start_program():
@@ -14,48 +67,91 @@ def start_program():
     5. 'list all' to list all your tasks
     6. 'list todo' to list all incomplete tasks ordered by priority
     7. 'purge' to remove all completed tasks''')
-    new_to_do_list = toDoList.ToDoList()
     while True:
         try:
-            task_input = input("")
+            if len(sys.argv) != 1:
+                task_input = " ".join(sys.argv[1:])
+            else:
+                print()
+                task_input = input("Enter command>>>")
             if task_input != 0:
                 stripped_task = task_input.split()
                 command = stripped_task[0]
                 if command == 'add':
                     if len(stripped_task) == 1:
-                        task_description_input = input("Enter task description>>>")
-                        task_desc = new_to_do_list.determine_description(task_description_input.split())
-
-                        task_completed_input = input("Enter Completed>>>")
-                        task_completed = new_to_do_list.determine_completed(task_completed_input)
-
-                        task_priority_input = input("Enter Priority>>>")
-                        task_priority = new_to_do_list.determine_priority(task_priority_input.split())
-
-                        task_project_input = input("Enter Project>>>")
-                        task_project = new_to_do_list.determine_project(task_project_input.split())
-
-                        task_added = new_to_do_list.add([task_desc, task_priority, task_project], task_completed)
-                        print(task_added)
+                        add_from_terminal()
                     else:
                         task_added = new_to_do_list.add(stripped_task)
                         print(task_added)
                 elif command == 'upd':
-                    new_to_do_list.update(task_input)
+                    if len(stripped_task) > 2:
+                        updated_task = new_to_do_list.update(stripped_task)
+                        print(updated_task)
+                    if len(stripped_task) == 2:
+                        update_from_terminal(stripped_task)
                 elif command == 'rem':
-                    new_to_do_list.remove()
+                    print(new_to_do_list.remove(stripped_task[1:]))
                 elif command == 'done':
-                    new_to_do_list.completed_task()
+                    print(new_to_do_list.completed_task(stripped_task[1:]))
                 elif task_input == 'list all':
-                    new_to_do_list._print_tasks(new_to_do_list.get_all_tasks())
+                    new_to_do_list.print_tasks(new_to_do_list.get_all_tasks())
                 elif task_input == 'list todo':
-                    new_to_do_list._print_tasks(new_to_do_list.list_incomplete())
+                    list_todo = new_to_do_list.list_incomplete()
+                    new_to_do_list.print_tasks(list_todo)
                 elif command == 'purge':
-                    new_to_do_list.list_incomplete()
+                    print(new_to_do_list.remove_completed_tasks())
                 else:
                     raise ValueError()
         except ValueError:
             print("Please enter a valid command")
+
+        except exceptions.PriorityNotANumberException as e:
+            print(e)
+
+        except exceptions.InvalidProjectNameException as e:
+            print(e)
+
+        except exceptions.TooManyHashtagsInProjectNameException as e:
+            print(e)
+
+        except exceptions.TooManyExclamationMarksInPriorityNameException as e:
+            print(e)
+
+        except exceptions.InvalidFormatForProjectNameException as e:
+            print(e)
+
+        except exceptions.InvalidFormatForPriorityNameException as e:
+            print(e)
+
+        except exceptions.InvalidPriorityNumberException as e:
+            print(e)
+
+        except exceptions.InvalidCompletedInputException as e:
+            print(e)
+
+        except exceptions.EmptyDescriptionException as e:
+            print(e)
+
+        except exceptions.NoTaskIdException as e:
+            print(e)
+
+        except exceptions.MoreThanOneTaskIdException as e:
+            print(e)
+
+        except exceptions.TooManyEntriesForUpdate as e:
+            print(e)
+
+        except exceptions.CannotFindTaskException as e:
+            print(e)
+
+        except FileExistsError as e:
+            print(e)
+
+        except FileNotFoundError as e:
+            print(e)
+
+        except AttributeError as e:
+            print(e)
 
 
 if __name__ == '__main__':
